@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/RegisterStyle.css">
+</head>
+<body>  
+
+  <div class="container">
+      <h2>Registrarse</h2>
+
+      <div class="form-container">
+          <form action="/auth/register" method="POST" id="form">
+              <p>Nombre de usuario:</p>
+              <input type="text" name="username" required>
+
+              <p>Correo:</p>
+              <input type="email" name="email" required>
+
+              <p>Contraseña:</p>
+              <input type="password" name="password" required>
+
+              <p>Confirmar Contraseña:</p>
+              <input type="password" name="passwordConfirm" required>
+
+              <button type="submit" id="button">Registrarse</button>
+          </form>
+      </div>
+
+      <a href="/auth/login">¿Ya tienes cuenta? Iniciar sesión</a>
+
+      <div class="error <%= message ? 'show' : '' %>">
+          <% if (message) { %>
+            <div class="message <%= message.type %>">
+              <%= message.text %>
+            </div>
+          <% } %>
+      </div>
+  </div>
+
+</body>
+</html>

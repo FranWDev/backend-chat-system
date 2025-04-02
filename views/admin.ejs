@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de administrador</title>
+    <link rel="stylesheet" href="/css/AdminPanelStyle.css">
+</head>
+<body>
+
+    <div id="header">
+        <h1>Panel de Administrador</h1>
+    </div>
+
+    <div id="content">
+        <form action="/admin/get_all_data" method="POST" id="form">
+            <button type="submit" id="button">Ver todos los registros</button>
+        </form>
+
+        <form action="/user" method="GET">
+            <button type="submit">Ir a mis chats</button>
+        </form>
+
+        <div id="logout-container">
+            <form action="/auth/logout" method="POST">
+                <button type="submit" id="button">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
