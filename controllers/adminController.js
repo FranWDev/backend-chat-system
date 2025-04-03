@@ -5,11 +5,11 @@ exports.verify = async (req, res) => {
     res.render("admin", {
       userId: req.user.id,
       username: req.user.username,
-      email: req.user.email
+      email: req.user.email,
     });
   } catch (err) {
     console.error(err);
-    res.render("error")
+    res.render("error");
   }
 };
 
@@ -23,16 +23,16 @@ exports.getUserInfo = async (req, res) => {
       [username]
     );
     conn.release();
-    return res.render("user_info", { 
+    return res.render("user_info", {
       user: info,
       userId: req.user.id,
       username: req.user.username,
-      email: req.user.email
+      email: req.user.email,
     });
   } catch (err) {
     conn.release();
     console.error(err);
-    res.render("error")
+    res.render("error");
   }
 };
 
@@ -42,14 +42,14 @@ exports.getAllData = async (req, res) => {
   try {
     const [users] = await conn.execute("SELECT id, username FROM users");
     conn.release();
-    return res.render("info", { 
+    return res.render("info", {
       users,
       userId: req.user.id,
       username: req.user.username,
-      email: req.user.email
+      email: req.user.email,
     });
   } catch (err) {
     conn.release();
-    res.render("error")
+    res.render("error");
   }
 };

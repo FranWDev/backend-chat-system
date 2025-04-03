@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 
-router.get("/", authController.auth, (req, res) => 
+router.get("/", authController.auth, (req, res) =>
   res.render("login", { message: null })
 );
-router.get("/login", authController.auth, (req, res) => 
+router.get("/login", authController.auth, (req, res) =>
   res.render("login", { message: null })
 );
-router.get("/register", authController.auth, (req, res) => 
+router.get("/register", authController.auth, (req, res) =>
   res.render("register", { message: null })
 );
 

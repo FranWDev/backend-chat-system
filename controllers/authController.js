@@ -4,27 +4,28 @@ const pool = require("../models/db.js");
 const { body, validationResult } = require("express-validator");
 require("dotenv").config();
 
-exports.auth = (req, res, next) => {
-  const token = req.cookies.token;
+exports.auth = async (req, res, next) => {
+  const token = await req.cookies?.token;
 
-  if (!token) {
-    return next(); 
-  }
+  if (!token) return next();
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+        path: "/",
+      });
+      return res.redirect("/auth/login");
+    }
+
     req.user = decoded;
-    return decoded.isAdmin === 1
-      ? res.redirect("/admin")
-      : res.redirect("/user");
-  } catch (err) {
-    res.clearCookie("token");
-    return next();
-  }
+    next();
+  });
 };
 
 exports.register = async (req, res) => {
-
   await Promise.all([
     body("username")
       .trim()
@@ -61,7 +62,6 @@ exports.register = async (req, res) => {
 
   const conn = await pool.getConnection();
   try {
-
     const [existingUser] = await conn.execute(
       "SELECT id FROM users WHERE username = ? OR email = ?",
       [username, email]
@@ -84,17 +84,17 @@ exports.register = async (req, res) => {
       [username]
     );
     const token = jwt.sign(
-      { id: user[0].id, email: user[0].email, isAdmin: user[0].isAdmin }, 
+      { id: user[0].id, email: user[0].email, isAdmin: user[0].isAdmin },
       process.env.JWT_SECRET,
-      { expiresIn: '30d' } 
+      { expiresIn: "30d" }
     );
-    
-    res.cookie('token', token, {
+
+    res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: 'None',
+      sameSite: "Lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      path: '/',
+      path: "/",
     });
     res.redirect("/user");
   } catch (err) {
@@ -138,18 +138,23 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: userInfo[0].id, email: userInfo[0].email, isAdmin: userInfo[0].isAdmin },
+      {
+        id: userInfo[0].id,
+        email: userInfo[0].email,
+        isAdmin: userInfo[0].isAdmin,
+      },
       process.env.JWT_SECRET,
-      { expiresIn: '30d' } 
+      { expiresIn: "30d" }
     );
-    
-    res.cookie('token', token, {
+
+    res.cookie("token", token, {
       httpOnly: true,
-      secure: false, 
-      sameSite: 'None',
+      secure: false,
+      sameSite: "Lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      path: '/',
+      path: "/",
     });
+
     res.redirect(userInfo[0].isAdmin === 1 ? "/admin" : "/user");
   } catch (err) {
     console.error(`Error en login: ${err}`);
@@ -165,7 +170,8 @@ exports.logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: false,
-    sameSite: "None",
+    sameSite: "Lax",
+    path: "/",
   });
   res.redirect("/auth/login");
 };
