@@ -57,8 +57,8 @@ XAMPP or another MySQL server
 - Start the server: npm start
 - Register two users and initiate a real-time chat session to verify functionality.
 - If you want to test an admin user, simply modify an existing user:
-```
 In the Xampp shell:
+```
 UPDATE users
 SET isAdmin = 1
 WHERE username = '[your_account_username]';
