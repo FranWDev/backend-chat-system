@@ -55,7 +55,7 @@ XAMPP or another MySQL server
 - Click the Shell button in XAMPP and type: mysql -u root -p (do not type any password)
 - Copy and paste the database (.sql file)
 - Start the server: npm start
-- Create two accounts and test the chat
+- Register two users and initiate a real-time chat session to verify functionality.
 
 🌟 Why This Project?
 Demonstrates professional-grade backend skills:
