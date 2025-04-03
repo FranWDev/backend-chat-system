@@ -66,6 +66,9 @@ WHERE username = '[your_account_username]';
 ```
 🌟 Why This Project?
 Demonstrates professional-grade backend skills:
+
 ✅ Clean architecture (MVC pattern)
+
 ✅ Production-ready practices (connection pooling, env vars)
+
 ✅ API security fundamentals
