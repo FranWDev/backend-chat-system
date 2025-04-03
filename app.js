@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("node:path");
+const cors = require("cors")
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
@@ -19,7 +20,10 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
+app.use(cors({
+  origin: 'http://localhost:3000', // Ajusta al puerto de tu frontend
+  credentials: true
+}));
 app.use("/chat", chatRoutes);
 app.use("/admin", adminRoutes);
 app.use("/auth", authRoutes);
@@ -71,16 +75,11 @@ io.on('connection', (socket) => {
     });
 });
 
+
 app.get("/", (req, res) => {
   try {
-    const cookies = req.headers.cookie?.split(';').reduce((acc, cookie) => {
-      const [name, value] = cookie.trim().split('=');
-      acc[name] = value;
-      return acc;
-    }, {});
-
     const token = cookies?.token;
-    
+
     if (!token) {
       return res.redirect("/auth/login");
     }
@@ -89,10 +88,15 @@ app.get("/", (req, res) => {
     return res.redirect(decoded?.isAdmin ? "/admin" : "/user");
     
   } catch (err) {
-    res.setHeader('Set-Cookie', 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT');
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'None'
+    });
     return res.redirect("/auth/login");
   }
 });
+
 server.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });

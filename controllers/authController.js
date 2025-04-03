@@ -86,10 +86,16 @@ exports.register = async (req, res) => {
     const token = jwt.sign(
       { id: user[0].id, email: user[0].email, isAdmin: user[0].isAdmin }, 
       process.env.JWT_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: '30d' } 
     );
-
-    res.cookie("token", token, { httpOnly: true, secure: false });
+    
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'None',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      path: '/',
+    });
     res.redirect("/user");
   } catch (err) {
     console.error(`Error al registrar usuario: ${err}`);
@@ -123,8 +129,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    const user = userInfo[0];
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, userInfo[0].password);
 
     if (!passwordMatch) {
       return res.render("login", {
@@ -133,13 +138,19 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, isAdmin: user.isAdmin },
+      { id: userInfo[0].id, email: userInfo[0].email, isAdmin: userInfo[0].isAdmin },
       process.env.JWT_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: '30d' } 
     );
-
-    res.cookie("token", token, { httpOnly: true, secure: false });
-    res.redirect(user.isAdmin === 1 ? "/admin" : "/user");
+    
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false, 
+      sameSite: 'None',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+    res.redirect(userInfo[0].isAdmin === 1 ? "/admin" : "/user");
   } catch (err) {
     console.error(`Error en login: ${err}`);
     res.status(500).render("login", {
@@ -153,8 +164,8 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: false,
+    sameSite: "None",
   });
   res.redirect("/auth/login");
 };

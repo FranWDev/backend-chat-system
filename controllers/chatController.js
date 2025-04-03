@@ -1,4 +1,5 @@
 const pool = require("../models/db.js");
+const jwt = require("jsonwebtoken");
 
 exports.saveMessage = async (senderId, receiverId, content) => {
   const conn = await pool.getConnection();
@@ -54,6 +55,9 @@ exports.sendMessage = async (req, res) => {
 };
 
 exports.isRouteManipulated = async (req, res) => {
+  const token = req.cookies.token;
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  req.user = decoded;
   const { senderId } = req.params;
     if (senderId == req.user.id) {
         return next();
