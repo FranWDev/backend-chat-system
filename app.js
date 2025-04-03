@@ -71,10 +71,8 @@ io.on('connection', (socket) => {
     });
 });
 
-// Ruta principal
 app.get("/", (req, res) => {
   try {
-    // Lee el header de cookies manualmente
     const cookies = req.headers.cookie?.split(';').reduce((acc, cookie) => {
       const [name, value] = cookie.trim().split('=');
       acc[name] = value;
@@ -95,7 +93,6 @@ app.get("/", (req, res) => {
     return res.redirect("/auth/login");
   }
 });
-// Iniciar servidor
 server.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
