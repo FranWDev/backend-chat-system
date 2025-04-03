@@ -3,6 +3,7 @@
 A secure and scalable real-time messaging platform powered by Node.js, featuring JWT authentication, RESTful API design, and WebSocket-based communication.
 
 🚀 Core Features
+
 ✔ JWT Authentication
 - Role-based access (Admin/User)
 - Password hashing with bcryptjs
@@ -52,7 +53,7 @@ XAMPP or another MySQL server
 - Install dependencies: ```npm install```
 - Configure .env file
 - Start MySQL in Xampp
-- Click the Shell button in XAMPP and type: mysql -u root -p (do not type any password)
+- Click the Shell button in XAMPP and type: ```mysql -u root -p``` (do not type any password)
 - Copy and paste the database (.sql file)
 - Start the server: ```npm start```
 - Register two users and initiate a real-time chat session to verify functionality.
