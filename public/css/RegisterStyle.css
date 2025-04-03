@@ -80,24 +80,9 @@ a:hover {
     text-decoration: underline;
 }
 
-.error {
-    margin-top: 10px;
-    text-align: center;
-    display: none;
-}
-
-.error.show {
-    display: block;
-}
-
 .message {
     padding: 10px;
     border-radius: 5px;
-}
-
-.error .message {
-    background-color: #ff4d4d;
-    color: white;
 }
 
 .success .message {

@@ -9,7 +9,7 @@ exports.verify = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.render("error")
   }
 };
 
@@ -32,7 +32,7 @@ exports.getUserInfo = async (req, res) => {
   } catch (err) {
     conn.release();
     console.error(err);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.render("error")
   }
 };
 
@@ -50,6 +50,6 @@ exports.getAllData = async (req, res) => {
     });
   } catch (err) {
     conn.release();
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.render("error")
   }
 };
