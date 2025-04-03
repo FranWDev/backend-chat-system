@@ -56,7 +56,13 @@ XAMPP or another MySQL server
 - Copy and paste the database (.sql file)
 - Start the server: npm start
 - Register two users and initiate a real-time chat session to verify functionality.
-
+- If you want to test an admin user, simply modify an existing user:
+```
+In the Xampp shell:
+UPDATE users
+SET isAdmin = 1
+WHERE username = '[your_account_username]';
+```
 🌟 Why This Project?
 Demonstrates professional-grade backend skills:
 ✅ Clean architecture (MVC pattern)
