@@ -1,5 +1,5 @@
  # backend-chat-system
-🔐 Secure Chat API with Node.js
+🔐 Secure Chat with Node.js
 A secure and scalable real-time messaging platform powered by Node.js, featuring JWT authentication, RESTful API design, and WebSocket-based communication.
 
 🚀 Core Features
