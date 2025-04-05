@@ -1,10 +1,9 @@
-const pool = require("../models/db.js");
+const {pool, queries} = require("../models/db.js");
 
 exports.redirect = async (req, res) => {
   try {
     const [users] = await pool.execute(
-      "SELECT id, username FROM users WHERE id != ?",
-      [req.user.id]
+      queries.getOtherUsers, [req.user.id]
     );
 
     return res.render("user", {

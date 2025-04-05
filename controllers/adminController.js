@@ -1,4 +1,4 @@
-const pool = require("../models/db.js");
+const { pool, queries } = require("../models/db.js");
 
 exports.verify = async (req, res) => {
   try {
@@ -19,8 +19,7 @@ exports.getUserInfo = async (req, res) => {
 
   try {
     const [info] = await conn.execute(
-      "SELECT * FROM users WHERE username = ?",
-      [username]
+      queries.getUser, [username]
     );
     conn.release();
     return res.render("user_info", {
@@ -40,7 +39,7 @@ exports.getAllData = async (req, res) => {
   const conn = await pool.getConnection();
 
   try {
-    const [users] = await conn.execute("SELECT id, username FROM users");
+    const [users] = await conn.execute(queries.getAllUsers);
     conn.release();
     return res.render("info", {
       users,

@@ -11,7 +11,7 @@ const { auth, isAdmin } = require("./middlewares/authMiddleware");
 const app = express();
 const server = http.createServer(app);
 const port = 3000;
-const pool = require("./models/db");
+const {pool, queries} = require("./models/db");
 const cookieParser = require("cookie-parser");
 
 app.use(express.json());
@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", async () => {
     console.log("Cliente desconectado");
   });
 
@@ -60,8 +60,7 @@ io.on("connection", (socket) => {
 
     try {
       const [messages] = await pool.execute(
-        "SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) ORDER BY timestamp",
-        [senderId, receiverId, receiverId, senderId]
+        queries.getMessage, [senderId, receiverId, receiverId, senderId]
       );
 
       socket.emit("messageHistory", messages);

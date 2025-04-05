@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const pool = require("../models/db.js");
+const {pool, queries} = require("../models/db.js");
 const { body, validationResult } = require("express-validator");
 require("dotenv").config();
 
@@ -63,8 +63,7 @@ exports.register = async (req, res) => {
   const conn = await pool.getConnection();
   try {
     const [existingUser] = await conn.execute(
-      "SELECT id FROM users WHERE username = ? OR email = ?",
-      [username, email]
+      queries.getUserId, [username, email]
     );
 
     if (existingUser.length > 0) {
@@ -75,13 +74,11 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await conn.execute(
-      "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-      [username, email, hashedPassword]
+      queries.addUser, [username, email, hashedPassword]
     );
 
     const [user] = await conn.execute(
-      "SELECT * FROM users WHERE username = ?",
-      [username]
+      queries.getUser, [username]
     );
     const token = jwt.sign(
       { id: user[0].id, email: user[0].email, isAdmin: user[0].isAdmin },
@@ -119,8 +116,7 @@ exports.login = async (req, res) => {
   const conn = await pool.getConnection();
   try {
     const [userInfo] = await conn.execute(
-      "SELECT id, username, email, password, isAdmin FROM users WHERE username = ?",
-      [username]
+      queries.getUser, [username]
     );
 
     if (userInfo.length === 0) {

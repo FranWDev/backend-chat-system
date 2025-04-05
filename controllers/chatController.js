@@ -1,4 +1,4 @@
-const pool = require("../models/db.js");
+const {pool, queries} = require("../models/db.js");
 const jwt = require("jsonwebtoken");
 
 exports.saveMessage = async (senderId, receiverId, content) => {
@@ -27,11 +27,9 @@ exports.sendMessage = async (req, res) => {
 
   try {
     await pool.execute(
-      "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)",
-      [senderId, receiverId, content]
+      queries.addMessage, [senderId, receiverId, content]
     );
 
-    res.status(200).json({ message: "Mensaje enviado exitosamente" });
   } catch (err) {
     console.error("Error al enviar el mensaje:", err);
     res.status(500).json({ message: "Error interno del servidor" });
@@ -43,8 +41,7 @@ exports.getMessages = async (req, res) => {
 
   try {
     const [messages] = await pool.execute(
-      "SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) ORDER BY timestamp",
-      [senderId, receiverId, receiverId, senderId]
+      queries.getMessage, [senderId, receiverId, receiverId, senderId]
     );
 
     res.json({
