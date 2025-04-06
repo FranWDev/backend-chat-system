@@ -36,7 +36,7 @@ A secure and scalable real-time messaging platform powered by Node.js, featuring
 src/
 ├── controllers/       # Business logic (Auth, Chat, Admin)
 ├── middlewares/       # JWT auth & validations
-├── models/            # Connection pool
+├── models/            # Connection pool and queries
 ├── public/            # Static assets (CSS, JS, images)
 ├── routes/            # RESTful endpoint definitions
 ├── views/             # EJS templates
