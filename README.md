@@ -34,7 +34,7 @@ A secure and scalable real-time messaging platform powered by Node.js, featuring
 📂 Project Structure
 ```
 src/
-├── controllers/       # Business logic (Auth, Chat, Admin)
+├── controllers/       # Business logic (Auth, user, Admin)
 ├── middlewares/       # JWT auth & validations
 ├── models/            # Connection pool and queries
 ├── public/            # Static assets (CSS, JS, images)
