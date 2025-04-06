@@ -39,6 +39,7 @@ src/
 ├── models/            # Connection pool and queries
 ├── public/            # Static assets (CSS, JS, images)
 ├── routes/            # RESTful endpoint definitions
+├── services/          # Reusable services
 ├── views/             # EJS templates
 ├── .env               # Environment variables
 ├── .sql               # DB schema export
