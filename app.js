@@ -3,7 +3,6 @@ const path = require("node:path");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
-const chatRoutes = require("./routes/chat");
 const jwt = require("jsonwebtoken");
 const http = require("http");
 const socketIo = require("socket.io");
@@ -13,14 +12,13 @@ const server = http.createServer(app);
 const port = 3000;
 const {pool, queries} = require("./models/db");
 const cookieParser = require("cookie-parser");
-
+const {encrypt, decrypt} = require("./services/encyptionService")
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use("/chat", chatRoutes);
 app.use("/admin", adminRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
@@ -34,16 +32,14 @@ io.on("connection", (socket) => {
     const { senderId, receiverId, content } = data;
 
     try {
+
       await pool.execute(
-        "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)",
-        [senderId, receiverId, content]
+        queries.addMessage, [senderId, receiverId, content]
       );
 
       const [message] = await pool.execute(
-        "SELECT * FROM messages WHERE sender_id = ? AND receiver_id = ? ORDER BY timestamp DESC LIMIT 5",
-        [senderId, receiverId]
+        queries.recuperateMessages, [senderId, receiverId]
       );
-
       io.to(socket.id).emit("receiveMessage", message[0]);
       socket.broadcast.emit("receiveMessage", message[0]);
     } catch (err) {
