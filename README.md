@@ -27,7 +27,7 @@ A secure and scalable real-time messaging platform powered by Node.js, featuring
 
 💻 Tech Stack
 - Backend: Node.js | Express.js | MySQL | EJS
-- Security: JWT | bcryptjs | express-validator  
+- Security: JWT | bcryptjs | crypto | express-validator 
 - Real-time: Socket.io  
 - DevOps: Dotenv | Nodemon  
 
