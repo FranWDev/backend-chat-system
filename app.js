@@ -38,10 +38,9 @@ io.on("connection", (socket) => {
       );
 
       const [message] = await pool.execute(
-        queries.recuperateMessages, [senderId, receiverId]
+        queries.getLastestMessage, [senderId, receiverId]
       );
       io.to(socket.id).emit("receiveMessage", message[0]);
-      socket.broadcast.emit("receiveMessage", message[0]);
     } catch (err) {
       console.error("Error al guardar mensaje:", err);
     }

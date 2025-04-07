@@ -16,8 +16,7 @@
         <ul id="user-list">
             <% users.forEach(user => { %>
                 <li class="user-item">
-                    <form action="/admin/get_user_info" method="POST">
-                        <input type="hidden" name="username" value="<%= user.username %>" required>
+                    <form action="/admin/getUser/<%= user.id%>" method="GET">
                         <button type="submit">
                             <%= user.username %>
                         </button>

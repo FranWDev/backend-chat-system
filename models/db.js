@@ -13,23 +13,25 @@ const pool = mysql.createPool({
 });
 
 const getUser = "SELECT * FROM users WHERE username = ?";
+const getUserById = "SELECT * FROM users WHERE id = ?"
 const getAllUsers = "SELECT id, username FROM users";
 const getOtherUsers = "SELECT id, username FROM users WHERE id != ?";
 const getUserId = "SELECT id FROM users WHERE username = ? OR email = ?";
 const getMessage = "SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) ORDER BY timestamp";
 const addUser = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
 const addMessage = "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)";
-const recuperateMessages = "SELECT * FROM messages WHERE sender_id = ? AND receiver_id = ? ORDER BY timestamp DESC LIMIT 5"
+const getLastestMessage = "SELECT * FROM messages WHERE sender_id = ? AND receiver_id = ? ORDER BY timestamp DESC LIMIT 5"
 module.exports = {
   pool,
   queries: {
     getUser,
+    getUserById,
     getAllUsers,
     getOtherUsers,
     getMessage,
     getUserId,
     addUser,
     addMessage,
-    recuperateMessages
+    getLastestMessage
   }
 };

@@ -14,12 +14,12 @@ exports.verify = async (req, res) => {
 };
 
 exports.getUserInfo = async (req, res) => {
-  const { username } = req.body;
+  const id = req.params;
   const conn = await pool.getConnection();
 
   try {
     const [info] = await conn.execute(
-      queries.getUser, [username]
+      queries.getUserById, [id.userId]
     );
     conn.release();
     return res.render("user_info", {

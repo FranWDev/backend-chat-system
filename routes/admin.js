@@ -4,8 +4,7 @@ const adminController = require("../controllers/adminController");
 const { auth, isAdmin } = require("../middlewares/authMiddleware");
 
 router.get("/", auth, isAdmin, adminController.verify);
-
-router.post("/get_user_info", auth, isAdmin, adminController.getUserInfo);
-router.post("/get_all_data", auth, isAdmin, adminController.getAllData);
+router.get("/getUser/:userId", auth, isAdmin, adminController.getUserInfo);
+router.get("/userList", auth, isAdmin, adminController.getAllData);
 
 module.exports = router;
