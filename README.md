@@ -27,18 +27,19 @@ A secure and scalable real-time messaging platform powered by Node.js, featuring
 
 💻 Tech Stack
 - Backend: Node.js | Express.js | MySQL | EJS
-- Security: JWT | bcryptjs | express-validator  
+- Security: JWT | Bcryptjs | Crypto | Express-validator 
 - Real-time: Socket.io  
 - DevOps: Dotenv | Nodemon  
 
 📂 Project Structure
 ```
 src/
-├── controllers/       # Business logic (Auth, Chat, Admin)
+├── controllers/       # Business logic (Auth, user, Admin)
 ├── middlewares/       # JWT auth & validations
-├── models/            # Connection pool
+├── models/            # Connection pool and queries
 ├── public/            # Static assets (CSS, JS, images)
 ├── routes/            # RESTful endpoint definitions
+├── services/          # Reusable services
 ├── views/             # EJS templates
 ├── .env               # Environment variables
 ├── .sql               # DB schema export
