@@ -51,7 +51,7 @@ src/
 Node.js installed
 XAMPP or another MySQL server
 
-- Clone repo: git clone [repo-url]
+- Clone repo: ```git clone [repo-url]```
 - Install dependencies: ```npm install```
 - Configure .env file
 - Start MySQL in Xampp
