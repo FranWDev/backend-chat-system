@@ -1,6 +1,6 @@
 const { pool, queries } = require("../models/db.js");
 
-exports.verify = async (req, res) => {
+exports.redirect = async (req, res) => {
   try {
     res.render("admin", {
       userId: req.user.id,

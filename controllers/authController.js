@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const {pool, queries} = require("../models/db.js");
+const { pool, queries } = require("../models/db.js");
 const { body, validationResult } = require("express-validator");
 require("dotenv").config();
 
@@ -62,9 +62,10 @@ exports.register = async (req, res) => {
 
   const conn = await pool.getConnection();
   try {
-    const [existingUser] = await conn.execute(
-      queries.getUserId, [username, email]
-    );
+    const [existingUser] = await conn.execute(queries.getUserId, [
+      username,
+      email,
+    ]);
 
     if (existingUser.length > 0) {
       return res.render("register", {
@@ -73,15 +74,15 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await conn.execute(
-      queries.addUser, [username, email, hashedPassword]
-    );
+    await conn.execute(queries.addUser, [username, email, hashedPassword]);
 
-    const [user] = await conn.execute(
-      queries.getUser, [username]
-    );
+    const [user] = await conn.execute(queries.getUser, [username]);
     const token = jwt.sign(
-      { id: user[0].id, email: user[0].email, isAdmin: user[0].isAdmin },
+      {
+        id: user[0].id,
+        email: user[0].email,
+        user: userInfo[0].username,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "30d" }
     );
@@ -93,6 +94,7 @@ exports.register = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       path: "/",
     });
+    conn.release();
     res.redirect("/user");
   } catch (err) {
     console.error(`Error al registrar usuario: ${err}`);
@@ -115,9 +117,7 @@ exports.login = async (req, res) => {
 
   const conn = await pool.getConnection();
   try {
-    const [userInfo] = await conn.execute(
-      queries.getUser, [username]
-    );
+    const [userInfo] = await conn.execute(queries.getUser, [username]);
 
     if (userInfo.length === 0) {
       return res.render("login", {
@@ -136,8 +136,8 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       {
         id: userInfo[0].id,
+        user: userInfo[0].username,
         email: userInfo[0].email,
-        isAdmin: userInfo[0].isAdmin,
       },
       process.env.JWT_SECRET,
       { expiresIn: "30d" }
@@ -150,7 +150,7 @@ exports.login = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       path: "/",
     });
-
+    conn.release();
     res.redirect(userInfo[0].isAdmin === 1 ? "/admin" : "/user");
   } catch (err) {
     console.error(`Error en login: ${err}`);

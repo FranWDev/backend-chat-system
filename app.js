@@ -10,9 +10,9 @@ const { auth, isAdmin } = require("./middlewares/authMiddleware");
 const app = express();
 const server = http.createServer(app);
 const port = 3000;
-const {pool, queries} = require("./models/db");
+const { pool, queries } = require("./models/db");
 const cookieParser = require("cookie-parser");
-const {encrypt, decrypt} = require("./services/encyptionService")
+const { encrypt, decrypt } = require("./services/encyptionService");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -32,14 +32,12 @@ io.on("connection", (socket) => {
     const { senderId, receiverId, content } = data;
 
     try {
+      await pool.execute(queries.addMessage, [senderId, receiverId, content]);
 
-      await pool.execute(
-        queries.addMessage, [senderId, receiverId, content]
-      );
-
-      const [message] = await pool.execute(
-        queries.getLastestMessage, [senderId, receiverId]
-      );
+      const [message] = await pool.execute(queries.getLastestMessage, [
+        senderId,
+        receiverId,
+      ]);
       io.to(socket.id).emit("receiveMessage", message[0]);
     } catch (err) {
       console.error("Error al guardar mensaje:", err);
@@ -54,9 +52,12 @@ io.on("connection", (socket) => {
     const { senderId, receiverId } = data;
 
     try {
-      const [messages] = await pool.execute(
-        queries.getMessage, [senderId, receiverId, receiverId, senderId]
-      );
+      const [messages] = await pool.execute(queries.getMessage, [
+        senderId,
+        receiverId,
+        receiverId,
+        senderId,
+      ]);
 
       socket.emit("messageHistory", messages);
     } catch (err) {

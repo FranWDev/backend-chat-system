@@ -21,6 +21,7 @@ const getMessage = "SELECT * FROM messages WHERE (sender_id = ? AND receiver_id 
 const addUser = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
 const addMessage = "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)";
 const getLastestMessage = "SELECT * FROM messages WHERE sender_id = ? AND receiver_id = ? ORDER BY timestamp DESC LIMIT 5"
+const getIfAdmin = "SELECT isAdmin FROM users WHERE email = ?"
 module.exports = {
   pool,
   queries: {
@@ -32,6 +33,7 @@ module.exports = {
     getUserId,
     addUser,
     addMessage,
-    getLastestMessage
+    getLastestMessage,
+    getIfAdmin
   }
 };
