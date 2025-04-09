@@ -10,7 +10,6 @@ exports.auth = async (req, res, next) => {
   }
 
   try {
-
     const conn = await pool.getConnection();
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
@@ -29,7 +28,7 @@ exports.auth = async (req, res, next) => {
   } catch (err) {
     console.error("Error en autenticación:", err);
     return res.redirect("/auth/login");
-  } 
+  }
 };
 
 exports.isAdmin = async (req, res, next) => {

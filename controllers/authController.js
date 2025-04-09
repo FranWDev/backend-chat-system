@@ -101,8 +101,6 @@ exports.register = async (req, res) => {
     res.status(500).render("register", {
       message: { text: "Error interno del servidor", type: "error" },
     });
-  } finally {
-    conn.release();
   }
 };
 
@@ -157,9 +155,7 @@ exports.login = async (req, res) => {
     res.status(500).render("login", {
       message: { text: "Error interno del servidor", type: "error" },
     });
-  } finally {
-    conn.release();
-  }
+  } 
 };
 
 exports.logout = (req, res) => {
