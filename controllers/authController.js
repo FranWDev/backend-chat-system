@@ -81,7 +81,7 @@ exports.register = async (req, res) => {
       {
         id: user[0].id,
         email: user[0].email,
-        user: userInfo[0].username,
+        user: user[0].username,
       },
       process.env.JWT_SECRET,
       { expiresIn: "30d" }
