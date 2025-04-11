@@ -113,12 +113,12 @@ body {
     background-color: #20b858;
   }
 
-  #logout-container {
+  #gopanel-container {
     padding: 10px;
     text-align: center;
     background-color: #1e1e1e;
   }
 
-  #logout-container button {
-    background-color: red;
+  #gopanel-container button {
+    background-color: #20b858;
   }
