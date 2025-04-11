@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chat</title>
+    <link rel="stylesheet" href="/css/ChatStyle.css"/>
+  </head>
+
+  <body>
+    <div id="chat-container" data-user-id="<%= userId %>">
+      <div id="chat-list">
+        <h2>Usuarios</h2>
+        <ul id="user-list">
+          <% users.forEach(user=> { %>
+          <li>
+            <button
+              class="chat"
+              data-user-id="<%= user.id %>"
+              data-username="<%= user.username %>"
+            >
+              <%= user.username %>
+            </button>
+          </li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div id="chat-window">
+        <h2><span id="receiver-name">Selecciona un usuario</span></h2>
+        <div id="messages"></div>
+
+        <div id="message-input-container">
+          <input
+            type="text"
+            id="message-input"
+            placeholder="Escribe un mensaje..."/>
+          <button id="send">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="logout-container">
+      <form action="/user" method="GET">
+        <button type="submit">Volver al panel de usuario</button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/user.js"></script>
+  </body>
+</html>

@@ -67,24 +67,7 @@ io.on("connection", (socket) => {
 });
 
 app.get("/", async (req, res) => {
-  try {
-    const token = req.cookies?.token;
-    if (!token) {
-      return res.redirect("/auth/login");
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    return res.redirect(decoded?.isAdmin === 1 ? "/admin" : "/user");
-  } catch (err) {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: false,
-      sameSite: "None",
-      path: "/",
-    });
-    console.log(err);
-    return res.redirect("/auth/login");
-  }
+  return res.redirect("/user");
 });
 
 server.listen(port, () => {

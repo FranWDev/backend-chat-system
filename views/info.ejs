@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Panel de administrador</title>
-    <link rel="stylesheet" href="/css/UsersInfoStyle.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/css/UsersInfoStyle.css"/>
+  </head>
 
+  <body>
     <div id="header">
-        <h1>Información de todos los usuarios</h1>
+      <h1>Información de todos los usuarios</h1>
     </div>
 
     <div id="content">
-        <ul id="user-list">
-            <% users.forEach(user => { %>
-                <li class="user-item">
-                    <form action="/admin/getUser/<%= user.id%>" method="GET">
-                        <button type="submit">
-                            <%= user.username %>
-                        </button>
-                    </form>
-                </li>
-            <% }); %>
-        </ul>
+      <ul id="user-list">
+        <% users.forEach(user=> { %>
+        <li class="user-item">
+          <form action="/admin/users/<%= user.id%>" method="GET">
+            <button type="submit"><%= user.username %></button>
+          </form>
+        </li>
+        <% }); %>
+      </ul>
 
-        <div id="back-link">
-            <a href="/admin">Volver al panel de administrador</a>
-        </div>
+      <div id="back-link">
+        <a href="/admin">Volver al panel de administrador</a>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

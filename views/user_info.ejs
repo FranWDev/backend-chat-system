@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Panel de administrador</title>
-    <link rel="stylesheet" href="/css/UserInfoStyle.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/css/UserInfoStyle.css"/>
+  </head>
 
+  <body>
     <div id="header">
-        <h1>Información del usuario</h1>
+      <h1>Información del usuario</h1>
     </div>
 
     <div id="user-info">
-        <% user.forEach(data => { %>
-            <div>
-                <p><strong>ID:</strong> <%= data.id %></p>
-                <p><strong>Username:</strong> <%= data.username %></p>
-                <p><strong>Email:</strong> <%= data.email %></p>
-            </div>
-        <% }); %>
+      <% user.forEach(data=> { %>
+      <div>
+        <p>
+          <strong>ID:</strong>
+          <%= data.id %>
+        </p>
+        <p>
+          <strong>Username:</strong>
+          <%= data.username %>
+        </p>
+        <p>
+          <strong>Email:</strong>
+          <%= data.email %>
+        </p>
+      </div>
+      <% }); %>
     </div>
 
     <div id="back-button">
-        <form action="/admin/userList" method="GET" id="form">
-            <button type="submit" id="button">Volver</button>
-        </form>
+      <form action="/admin/users" method="GET" id="form">
+        <button type="submit" id="button">Volver</button>
+      </form>
     </div>
-
-</body>
+  </body>
 </html>

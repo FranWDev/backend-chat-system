@@ -1,45 +1,27 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat</title>
-  <link rel="stylesheet" href="/css/ChatStyle.css">
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Panel de usuario</title>
+    <link rel="stylesheet" href="/css/PanelStyle.css"/>
+  </head>
 
-  <div id="chat-container" data-user-id="<%= userId %>">
-    <div id="chat-list">
-      <h2>Usuarios</h2>
-      <ul id="user-list">
-        <% users.forEach(user=> { %>
-          <li>
-            <button onclick="openChat('<%= user.id %>', '<%= user.username %>')">
-              <%= user.username %>
-            </button>
-          </li>
-        <% }); %>
-      </ul>
+  <body>
+    <div id="header">
+      <h1>Panel de Usuario</h1>
     </div>
 
-    <div id="chat-window">
-      <h2><span id="receiver-name">Selecciona un usuario</span></h2>
-      <div id="messages"></div>
+    <div id="content">
+      <form action="/user/chat" method="POST">
+        <button type="submit">Ir a mis chats</button>
+      </form>
 
-      <div id="message-input-container">
-        <input type="text" id="message-input" placeholder="Escribe un mensaje..." />
-        <button onclick="sendMessage()">Enviar</button>
+      <div id="logout-container">
+        <form action="/auth/logout" method="POST">
+          <button type="submit" id="button">Cerrar sesión</button>
+        </form>
       </div>
     </div>
-  </div>
-
-  <div id="logout-container">
-    <form action="/auth/logout" method="POST">
-      <button type="submit">Cerrar sesión</button>
-    </form>
-  </div>
-
-  <script src="socket.io/socket.io.js"></script>
-  <script src="/js/user.js"></script>
-</body>
+  </body>
 </html>

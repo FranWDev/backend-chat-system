@@ -60,9 +60,8 @@ exports.register = async (req, res) => {
     });
   }
 
-  const conn = await pool.getConnection();
   try {
-    const [existingUser] = await conn.execute(queries.getUserId, [
+    const [existingUser] = await pool.execute(queries.getUserId, [
       username,
       email,
     ]);
@@ -74,9 +73,9 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await conn.execute(queries.addUser, [username, email, hashedPassword]);
+    await pool.execute(queries.addUser, [username, email, hashedPassword]);
 
-    const [user] = await conn.execute(queries.getUser, [username]);
+    const [user] = await pool.execute(queries.getUser, [username]);
     const token = jwt.sign(
       {
         id: user[0].id,
@@ -94,7 +93,7 @@ exports.register = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       path: "/",
     });
-    conn.release();
+
     res.redirect("/user");
   } catch (err) {
     console.error(`Error al registrar usuario: ${err}`);
@@ -113,9 +112,8 @@ exports.login = async (req, res) => {
     });
   }
 
-  const conn = await pool.getConnection();
   try {
-    const [userInfo] = await conn.execute(queries.getUser, [username]);
+    const [userInfo] = await pool.execute(queries.getUser, [username]);
 
     if (userInfo.length === 0) {
       return res.render("login", {
@@ -148,14 +146,13 @@ exports.login = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       path: "/",
     });
-    conn.release();
     res.redirect(userInfo[0].isAdmin === 1 ? "/admin" : "/user");
   } catch (err) {
     console.error(`Error en login: ${err}`);
     res.status(500).render("login", {
       message: { text: "Error interno del servidor", type: "error" },
     });
-  } 
+  }
 };
 
 exports.logout = (req, res) => {

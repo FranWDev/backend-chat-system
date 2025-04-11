@@ -1,12 +1,32 @@
-const {pool, queries} = require("../models/db.js");
+const { pool, queries } = require("../models/db.js");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-exports.redirect = async (req, res) => {
+exports.user = async (req, res) => {
   try {
-    const [users] = await pool.execute(
-      queries.getOtherUsers, [req.user.id]
-    );
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.redirect("/auth/login");
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
 
-    return res.render("user", {
+    const [user] = await pool.execute(queries.getIfAdmin, [req.user.email]);
+
+    if (!user[0]) {
+      return res.redirect("/auth/login");
+    }
+    return user[0].isAdmin == 1 ? res.redirect("/admin") : res.render("user");
+  } catch (err) {
+    console.log("Error de autenticacion: ", err);
+  }
+};
+
+exports.chat = async (req, res) => {
+  try {
+    const [users] = await pool.execute(queries.getOtherUsers, [req.user.id]);
+
+    return res.render("chat", {
       userId: req.user.id,
       username: req.user.username,
       email: req.user.email,
@@ -14,7 +34,6 @@ exports.redirect = async (req, res) => {
     });
   } catch (err) {
     console.error("Error al obtener usuarios:", err);
-    res.clearCookie("token");
-    return res.redirect("/auth/login");
+    return res.redirect("/user");
   }
 };

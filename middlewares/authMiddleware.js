@@ -10,10 +10,11 @@ exports.auth = async (req, res, next) => {
   }
 
   try {
-    const conn = await pool.getConnection();
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    const [user] = await conn.execute(queries.getUser, [req.user.user]);
+
+    const [user] = await pool.execute(queries.getUser, [req.user.user]);
+
     if (user[0].id != req.user.id) {
       res.clearCookie("token", {
         httpOnly: true,
@@ -23,7 +24,7 @@ exports.auth = async (req, res, next) => {
       });
       res.redirect("/auth/login");
     }
-    conn.release();
+
     return next();
   } catch (err) {
     console.error("Error en autenticación:", err);
@@ -33,7 +34,6 @@ exports.auth = async (req, res, next) => {
 
 exports.isAdmin = async (req, res, next) => {
   try {
-    const conn = await pool.getConnection();
     const token = req.cookies?.token;
     if (!token) {
       return res.redirect("/auth/login");
@@ -41,14 +41,11 @@ exports.isAdmin = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
 
-    const [user] = await conn.execute(queries.getIfAdmin, [req.user.email]);
+    const [user] = await pool.execute(queries.getIfAdmin, [req.user.email]);
 
     if (!user[0]) {
-      conn.release();
       return res.redirect("/auth/login");
     }
-
-    conn.release();
     return user[0].isAdmin == 1 ? next() : res.redirect("/user");
   } catch (err) {
     console.log("Error de autenticacion: ", err);

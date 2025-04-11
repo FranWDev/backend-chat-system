@@ -80,3 +80,17 @@ document.getElementById('message-input').addEventListener('keydown', function(ev
     sendMessage();
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sendButton = document.getElementById("send");
+  sendButton.addEventListener("click", sendMessage);
+
+  const chats = document.querySelectorAll(".chat");
+  chats.forEach(chat => {
+    chat.addEventListener("click", function () {
+        const userId = chat.dataset.userId;
+        const username = chat.dataset.username;
+        openChat(userId, username);
+      });
+  });
+});

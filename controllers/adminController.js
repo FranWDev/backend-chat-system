@@ -9,38 +9,26 @@ exports.redirect = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.render("error");
+    return res.status(500).send("Internal Server Error");
   }
 };
 
 exports.getUserInfo = async (req, res) => {
   const id = req.params;
-  const conn = await pool.getConnection();
-
   try {
-    const [info] = await conn.execute(
-      queries.getUserById, [id.userId]
-    );
-    conn.release();
+    const [info] = await pool.execute(queries.getUserById, [id.userId]);
     return res.render("user_info", {
       user: info,
-      userId: req.user.id,
-      username: req.user.username,
-      email: req.user.email,
     });
   } catch (err) {
-    conn.release();
     console.error(err);
-    res.render("error");
+    return res.status(500).send("Internal Server Error");
   }
 };
 
 exports.getAllData = async (req, res) => {
-  const conn = await pool.getConnection();
-
   try {
-    const [users] = await conn.execute(queries.getAllUsers);
-    conn.release();
+    const [users] = await pool.execute(queries.getAllUsers);
     return res.render("info", {
       users,
       userId: req.user.id,
@@ -48,7 +36,6 @@ exports.getAllData = async (req, res) => {
       email: req.user.email,
     });
   } catch (err) {
-    conn.release();
-    res.render("error");
+    return res.status(500).send("Internal Server Error");
   }
 };

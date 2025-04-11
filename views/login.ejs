@@ -1,39 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Login</title>
-    <link rel="stylesheet" href="/css/LoginStyle.css">
-</head>
-<body>  
+    <link rel="stylesheet" href="/css/LoginStyle.css"/>
+  </head>
 
-  <div class="container">
+  <body>
+    <div class="container">
       <h2>Iniciar sesión</h2>
 
       <div class="form-container">
-          <form action="/auth/login" method="POST" id="form">
-              <p>Nombre de usuario:</p>
-              <input type="text" name="username" required>
+        <form action="/auth/login" method="POST" id="form">
+          <p>Nombre de usuario:</p>
+          <input type="text" name="username" required/>
 
-              <p>Contraseña:</p>
-              <input type="password" name="password" required>
+          <p>Contraseña:</p>
+          <input type="password" name="password" required/>
 
-              <button type="submit" id="button">Acceder</button>
-          </form>
+          <button type="submit" id="button">Acceder</button>
+        </form>
       </div>
 
       <a href="/auth/register">¿No tienes cuenta? Regístrate</a>
 
       <div class="error <%= message ? 'show' : '' %>">
-          <% if (message) { %>
-            <div class="message <%= message.type %>">
-              <%= message.text %>
-            </div>
-          <% } %>
+        <% if (message) { %>
+        <div class="message <%= message.type %>"><%= message.text %></div>
+        <% } %>
       </div>
-  </div>
-
-</body>
-</body>
+    </div>
+  </body>
 </html>
